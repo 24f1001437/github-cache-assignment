@@ -1,0 +1,37 @@
+name: Cache Demo
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1 — download repo code
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Step 2 — setup Node (example project)
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Step 3 — cache dependencies
+      - name: prime-cache-8edb542
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+          key: cache-8edb542
+
+      # Step 4 — show cache result (REQUIRED BY QUESTION)
+      - name: Show cache result
+        run: echo "Cache hit? ${{ steps.cache.outputs.cache-hit }}"
+
+      # Step 5 — simulate installing dependencies
+      - name: Install dependencies
+        run: npm init -y && npm install lodash
